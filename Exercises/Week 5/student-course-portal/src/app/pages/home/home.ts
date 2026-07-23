@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -8,21 +8,32 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class Home {
+export class Home implements OnInit, OnDestroy {
 
-  // String Interpolation
   portalName = 'Student Course Portal';
 
-  // Property Binding
   isPortalActive = true;
 
-  // Event Binding
   message = '';
 
-  // Two-Way Binding
   searchTerm = '';
 
-  onEnrollClick() {
+  availableCourses = 0;
+
+  constructor() {
+    console.log('Constructor called');
+  }
+
+  ngOnInit(): void {
+    this.availableCourses = 12;
+    console.log('HomeComponent initialised — courses loaded');
+  }
+
+  ngOnDestroy(): void {
+    console.log('HomeComponent destroyed');
+  }
+
+  onEnrollClick(): void {
     this.message = 'Enrollment opened!';
   }
 

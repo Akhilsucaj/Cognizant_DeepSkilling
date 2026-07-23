@@ -1,0 +1,15 @@
+<div style="border:1px solid black; padding:15px; margin:10px;">
+
+    <h3>{{ course.name }}</h3>
+
+    <p><strong>ID:</strong> {{ course.id }}</p>
+
+    <p><strong>Code:</strong> {{ course.code }}</p>
+
+    <p><strong>Credits:</strong> {{ course.credits }}</p>
+
+    <button (click)="enrollCourse()">
+        Enroll
+    </button>
+
+</div>
