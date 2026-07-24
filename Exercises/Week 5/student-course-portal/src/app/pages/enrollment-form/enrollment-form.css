@@ -1,0 +1,39 @@
+form{
+
+    width:400px;
+
+}
+
+input,
+select{
+
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+
+}
+
+button{
+
+    margin-top:15px;
+    padding:10px 20px;
+
+}
+
+.ng-invalid.ng-touched{
+
+    border:2px solid red;
+
+}
+
+.ng-valid.ng-touched{
+
+    border:2px solid green;
+
+}
+
+span{
+
+    font-size:14px;
+
+}
