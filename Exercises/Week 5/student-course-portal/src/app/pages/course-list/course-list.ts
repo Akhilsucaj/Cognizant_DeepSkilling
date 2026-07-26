@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+
+import { Store } from '@ngrx/store';
 
 import { CourseCard } from '../../components/course-card/course-card';
-import { CourseService } from '../../services/course';
 import { Course } from '../../models/course.model';
-import { FormsModule } from '@angular/forms';
+
+import * as CourseActions from '../../store/course/course.actions';
+import { selectAllCourses } from '../../store/course/course.selectors';
 
 @Component({
   selector: 'app-course-list',
@@ -14,7 +18,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     FormsModule,
     CourseCard
-],
+  ],
   templateUrl: './course-list.html',
   styleUrl: './course-list.css'
 })
@@ -29,20 +33,22 @@ export class CourseList implements OnInit {
   searchTerm = '';
 
   constructor(
-    private courseService: CourseService,
+    private store: Store,
     private router: Router,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
 
-  this.route.queryParamMap.subscribe(params => {
+    this.store.dispatch(
+      CourseActions.loadCourses()
+    );
 
-    const search = params.get('search');
+    this.route.queryParamMap.subscribe(params => {
 
-    this.courseService.getCourses().subscribe({
+      const search = params.get('search');
 
-      next: (courses) => {
+      this.store.select(selectAllCourses).subscribe(courses => {
 
         this.courses = courses;
 
@@ -50,39 +56,29 @@ export class CourseList implements OnInit {
 
           this.searchTerm = search;
 
-          this.courses = this.courses.filter(course =>
+          this.courses = courses.filter(course =>
 
-            course.name.toLowerCase().includes(search.toLowerCase()) ||
+            course.name
+              .toLowerCase()
+              .includes(search.toLowerCase())
 
-            course.code.toLowerCase().includes(search.toLowerCase())
+            ||
+
+            course.code
+              .toLowerCase()
+              .includes(search.toLowerCase())
 
           );
 
         }
 
-      },
-
-      error: err => {
-
-        console.error(err);
-
-        alert(err.message);
-
         this.isLoading = false;
 
-      },
-
-      complete: () => {
-
-        this.isLoading = false;
-
-      }
+      });
 
     });
 
-  });
-
-}
+  }
 
   onEnroll(courseId: number): void {
 

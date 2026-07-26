@@ -11,7 +11,10 @@ import { CommonModule } from '@angular/common';
 import { Highlight } from '../../directives/highlight';
 import { CreditLabelPipe } from '../../pipes/credit-label-pipe';
 import { EnrollmentService } from '../../services/enrollment';
+import { Store } from '@ngrx/store';
 
+import * as EnrollmentActions
+  from '../../store/enrollment/enrollment.actions';
 @Component({
   selector: 'app-course-card',
   standalone: true,
@@ -37,7 +40,10 @@ export class CourseCard implements OnChanges {
 
   isExpanded = false;
 
-  constructor(private enrollmentService: EnrollmentService) {}
+  constructor(
+  private enrollmentService: EnrollmentService,
+  private store: Store
+) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('Course Input Changed');
@@ -45,14 +51,39 @@ export class CourseCard implements OnChanges {
 
   enrollCourse(): void {
 
-    if (this.enrollmentService.isEnrolled(this.course.id)) {
-      this.enrollmentService.unenroll(this.course.id);
-    } else {
-      this.enrollmentService.enroll(this.course.id);
-      this.enrollRequested.emit(this.course.id);
-    }
+  if (this.enrollmentService.isEnrolled(this.course.id)) {
+
+    this.enrollmentService.unenroll(this.course.id);
+
+    this.store.dispatch(
+
+      EnrollmentActions.unenrollFromCourse({
+
+        courseId: this.course.id
+
+      })
+
+    );
+
+  } else {
+
+    this.enrollmentService.enroll(this.course.id);
+
+    this.store.dispatch(
+
+      EnrollmentActions.enrollInCourse({
+
+        courseId: this.course.id
+
+      })
+
+    );
+
+    this.enrollRequested.emit(this.course.id);
 
   }
+
+}
 
   toggleDetails(): void {
     this.isExpanded = !this.isExpanded;
