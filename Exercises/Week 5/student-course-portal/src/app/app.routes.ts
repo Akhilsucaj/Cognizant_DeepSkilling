@@ -1,10 +1,13 @@
 import { Routes } from '@angular/router';
 
 import { Home } from './pages/home/home';
-import { CourseList } from './pages/course-list/course-list';
 import { StudentProfile } from './pages/student-profile/student-profile';
-import { EnrollmentForm } from './pages/enrollment-form/enrollment-form';
-import { ReactiveEnrollmentForm } from './pages/reactive-enrollment-form/reactive-enrollment-form';
+import { CourseDetail } from './pages/course-detail/course-detail';
+import { CoursesLayout } from './pages/courses-layout/courses-layout';
+import { CourseList } from './pages/course-list/course-list';
+import { NotFound } from './pages/not-found/not-found';
+import { authGuard } from './guards/auth-guard';
+import { unsavedChangesGuard } from './guards/unsaved-changes-guard';
 
 export const routes: Routes = [
 
@@ -15,22 +18,45 @@ export const routes: Routes = [
 
   {
     path: 'courses',
-    component: CourseList
+    component: CoursesLayout,
+    children: [
+      {
+        path: '',
+        component: CourseList
+      },
+      {
+        path: ':id',
+        component: CourseDetail
+      }
+    ]
   },
 
   {
-    path: 'profile',
-    component: StudentProfile
-  },
+  path: 'profile',
+  canActivate: [authGuard],
+  component: StudentProfile
+},
 
   {
-    path: 'enroll',
-    component: EnrollmentForm
-  },
+  path: 'enroll',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/enrollment-form/enrollment-form')
+      .then(c => c.EnrollmentForm)
+},
+
+ {
+  path: 'enroll-reactive',
+  canActivate: [authGuard],
+  canDeactivate: [unsavedChangesGuard],
+  loadComponent: () =>
+    import('./pages/reactive-enrollment-form/reactive-enrollment-form')
+      .then(c => c.ReactiveEnrollmentForm)
+},
 
   {
-    path: 'enroll-reactive',
-    component: ReactiveEnrollmentForm
+    path: '**',
+    component: NotFound
   }
 
 ];
