@@ -7,15 +7,15 @@ export const selectCourseState =
 
 export const selectAllCourses = createSelector(
   selectCourseState,
-  (state) => state.courses
+  (state) => state?.courses ?? []
 );
 
 export const selectCoursesLoading = createSelector(
   selectCourseState,
-  (state) => state.loading
+  (state) => state?.loading ?? false
 );
 
 export const selectCoursesError = createSelector(
   selectCourseState,
-  (state) => state.error
+  (state) => state?.error ?? null
 );

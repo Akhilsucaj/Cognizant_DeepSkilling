@@ -22,39 +22,18 @@
       "gradeStatus": "pending"
     },
     {
-      "name": "",
-      "code": "",
-      "credits": 0,
-      "gradeStatus": "pending",
-      "id": "tPxQT76n9tg"
-    },
-    {
-      "id": "K6hUdj4TO8I",
+      "id": "2",
       "name": "Java",
       "code": "JAVA201",
       "credits": 3,
       "gradeStatus": "passed"
     },
     {
-      "name": "",
-      "code": "",
-      "credits": 0,
-      "gradeStatus": "pending",
-      "id": "joR9oXQLMEs"
-    },
-    {
-      "name": "",
-      "code": "",
-      "credits": 0,
-      "gradeStatus": "pending",
-      "id": "mk8RkxsB9JA"
-    },
-    {
       "name": "Angular",
       "code": "ANG101",
       "credits": 4,
       "gradeStatus": "passed",
-      "id": "40LuhgyYjTY"
+      "id": "1"
     }
   ],
   "students": [],
