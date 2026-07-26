@@ -36,23 +36,53 @@ export class CourseList implements OnInit {
 
   ngOnInit(): void {
 
-    this.courses = this.courseService.getCourses();
+  this.route.queryParamMap.subscribe(params => {
 
-    const search = this.route.snapshot.queryParamMap.get('search');
+    const search = params.get('search');
 
-    if (search) {
-      this.searchTerm = search;
-      this.courses = this.courses.filter(course =>
-        course.name.toLowerCase().includes(search.toLowerCase()) ||
-        course.code.toLowerCase().includes(search.toLowerCase())
-      );
-    }
+    this.courseService.getCourses().subscribe({
 
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1500);
+      next: (courses) => {
 
-  }
+        this.courses = courses;
+
+        if (search) {
+
+          this.searchTerm = search;
+
+          this.courses = this.courses.filter(course =>
+
+            course.name.toLowerCase().includes(search.toLowerCase()) ||
+
+            course.code.toLowerCase().includes(search.toLowerCase())
+
+          );
+
+        }
+
+      },
+
+      error: err => {
+
+        console.error(err);
+
+        alert(err.message);
+
+        this.isLoading = false;
+
+      },
+
+      complete: () => {
+
+        this.isLoading = false;
+
+      }
+
+    });
+
+  });
+
+}
 
   onEnroll(courseId: number): void {
 

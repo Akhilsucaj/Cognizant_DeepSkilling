@@ -8,6 +8,7 @@ import { CourseList } from './pages/course-list/course-list';
 import { NotFound } from './pages/not-found/not-found';
 import { authGuard } from './guards/auth-guard';
 import { unsavedChangesGuard } from './guards/unsaved-changes-guard';
+import { CourseManagement } from './pages/course-management/course-management';
 
 export const routes: Routes = [
 
@@ -52,6 +53,11 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./pages/reactive-enrollment-form/reactive-enrollment-form')
       .then(c => c.ReactiveEnrollmentForm)
+},
+
+{
+  path: 'course-management',
+  component: CourseManagement
 },
 
   {

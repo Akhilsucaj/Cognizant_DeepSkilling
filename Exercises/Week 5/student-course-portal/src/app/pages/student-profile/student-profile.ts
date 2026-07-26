@@ -1,22 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { EnrollmentService } from '../../services/enrollment';
 import { Course } from '../../models/course.model';
+import { EnrollmentService } from '../../services/enrollment';
 
 @Component({
   selector: 'app-student-profile',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './student-profile.html',
-  styleUrl: './student-profile.css',
+  styleUrl: './student-profile.css'
 })
-export class StudentProfile {
+export class StudentProfile implements OnInit {
 
-  constructor(private enrollmentService: EnrollmentService) {}
+  enrolledCourses: Course[] = [];
 
-  get enrolledCourses(): Course[] {
-    return this.enrollmentService.getEnrolledCourses();
+  constructor(
+    private enrollmentService: EnrollmentService
+  ) {}
+
+  ngOnInit(): void {
+
+    this.enrollmentService
+      .getEnrolledCourses()
+      .subscribe({
+
+        next: courses => {
+
+          this.enrolledCourses = courses;
+
+        },
+
+        error: err => {
+
+          console.error(err);
+
+        }
+
+      });
+
   }
 
 }
